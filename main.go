@@ -1,24 +1,27 @@
 package main
 
 import (
-	"fmt"
 	"github.com/ansilh/protobuf-tutorial/pb"
-	"github.com/golang/protobuf/proto"
+	"google.golang.org/protobuf/proto"
+	"io/ioutil"
 	"log"
 )
 
 func main() {
-	fmt.Println("Hello World")
 
 	ansil := &pb.Person{
 		Name: "Ansil",
 		Age:  34,
 	}
+	fname := "person.pbuf"
 
 	data, err := proto.Marshal(ansil)
+
 	if err != nil {
-		log.Fatal("Marshalling error: %v", err)
+		log.Fatalln("Marshalling error:", err)
 	}
 
-	fmt.Println(data)
+	if err := ioutil.WriteFile(fname, data, 0644); err != nil {
+		log.Fatalln("Failed to write address book:", err)
+	}
 }
